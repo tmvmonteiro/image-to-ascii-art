@@ -1,8 +1,9 @@
-from PIL import Image, ImageFile
+from PIL import Image, ImageFile, ImageOps
 from io import TextIOWrapper
 
 def initialize_image(file_name : str) -> ImageFile:
-    return Image.open(file_name)    
+    img = Image.open(file_name)
+    return ImageOps.exif_transpose(img)    
 
 def black_white(img : ImageFile) -> ImageFile:
     return img.convert("L")
