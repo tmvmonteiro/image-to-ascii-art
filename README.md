@@ -1,5 +1,9 @@
 # Image to ASCII Art
 
+| Original (`tux.jpg`) | Result (`tux.txt`) |
+| :---: | :---: |
+| ![Tux Original](docs/input.jpg) | ![Tux ASCII](docs/output.jpg) |
+
 This project, created in Python, allows the user to convert an image into a text-based representation (ASCII art). For practicality, I used the **[Pillow library](https://github.com/python-pillow/Pillow)** to interpret and manipulate the image files.
 
 ## Features
@@ -42,7 +46,7 @@ file_name|Positional|The name of the image file located in the /input directory.
 
 ```bash
 # Example 1: Rescale by 50% using a custom dense alphabet
-python main.py tux.jpg --scale 0.5 --alphabet "@%#*+=-:. "
+python main.py tux.jpg --scale 0.25 --alphabet " .:-=+*#%@"
 
 # Example 2: Resize to specific dimensions
 python main.py logo.png --width 100 --height 50 --alphabet " .:"
