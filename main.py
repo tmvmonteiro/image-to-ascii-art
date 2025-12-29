@@ -1,14 +1,11 @@
 from functions import *
-import sys
 import os
+import argparse
 
 input_location : str = "input/"
 output_location : str = "output/"
 
-small_alphabet = " -"
-big_alphabet = ""
-
-def main(file_name : str, scale : float | None = None, width : int | None = None, height : int | None = None) -> None:  
+def main(file_name : str, alphabet : str, scale : float | None = None, width : int | None = None, height : int | None = None) -> None:  
     try:
         img = initialize_image(str(input_location+file_name))
     except Exception as e:
@@ -33,7 +30,7 @@ def main(file_name : str, scale : float | None = None, width : int | None = None
         print(f"Error: Couldn't parse Image Pixels values into the Matrix : {e}")
         return 
     try:
-        ascii_matrix = pixel_colour_map(image_matrix, small_alphabet)
+        ascii_matrix = pixel_colour_map(image_matrix, alphabet)
     except Exception as e:
         print(f"Error: Couldn't map the Matrix values into ASCII Characters : {e}")
         return
@@ -47,18 +44,30 @@ def main(file_name : str, scale : float | None = None, width : int | None = None
         print(f"Error: Couldn't create/write content into Output File : {e}")
         return
         
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
 
-# The logic below needs to change to handle User Input correctly 
-# P.E: <class 'NoneType'> : <class 'str'> : <class 'str'> shouldn't happen
-if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        print("\nError: need to input file name (e.g.: tux.jpg) and scale or width/height")
-        print("Usage: py -u main.py <file_name> <scale>")
-        print("   or: py -u main.py <file_name> <width> <height>\n")
+    parser.add_argument("file_name", type=str)
+
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--scale", type=float)
+    group.add_argument("--width", type=int)
+
+    parser.add_argument("--height", type=int)
+    parser.add_argument("--alphabet", type=str, default=" -")
+
+    args = parser.parse_args()
+
+    file_name = args.file_name
+    alphabet = args.alphabet
+
+    if args.scale is not None:
+        scale = args.scale
+        width = None
+        height = None
     else:
-        if len(sys.argv) == 3:  # scale mode
-            main(sys.argv[1], float(sys.argv[2]), None, None)
-        elif len(sys.argv) == 4:  # width/height mode
-            main(sys.argv[1], None, int(sys.argv[2]), int(sys.argv[3]))
-        else:
-            print("Error: too many arguments")
+        scale = None
+        width = args.width
+        height = args.height
+
+    main(file_name, alphabet, scale, width, height)
